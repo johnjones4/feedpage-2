@@ -11,6 +11,12 @@ body {
   background: #eee;
 }
 
+#main {
+  margin: auto;
+  width: 100%;
+  max-width: 1000px;
+}
+
 h1,h2 {
   font-weight: 600;
 }
@@ -34,8 +40,6 @@ article {
   background: #fff;
   border-radius: 0.5em;
   margin: 0 auto 1em auto;
-  width: 100%;
-  max-width: 1000px;
 }
 
 a {
