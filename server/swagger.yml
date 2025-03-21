@@ -39,6 +39,8 @@ components:
           type: string
         url:
           type: string
+        thumbnail:
+          type: string
       required:
         - title
         - source

@@ -35,8 +35,22 @@
   const makePost = (post) => {
     const el = document.createElement('article');
 
+    if (post.thumbnail) {
+      const img = document.createElement('a');
+      img.href = post.url;
+      img.className = 'thumbnail';
+      img.style.backgroundImage = `url(${post.thumbnail})`;
+      img.target = '_blank';
+      img.rel = 'noopener';
+      el.appendChild(img);
+    }
+
+    const inner = document.createElement('div');
+    inner.className = 'inner'
+    el.appendChild(inner);
+
     const h2 = document.createElement('h2');
-    el.appendChild(h2);
+    inner.appendChild(h2);
 
     const a = document.createElement('a');
     a.href = post.url;
@@ -47,11 +61,11 @@
 
     const h3 = document.createElement('h3');
     h3.innerHTML = `${post.source} | ${new Date(post.timestamp).toLocaleString()}`;
-    el.appendChild(h3);
+    inner.appendChild(h3);
 
     const p = document.createElement('p');
     p.innerHTML = post.description;
-    el.appendChild(p);
+    inner.appendChild(p);
 
     return el;
   }

@@ -21,6 +21,7 @@ type post struct {
 	timestamp   time.Time
 	description string
 	url         string
+	thumbnail   *string
 }
 
 type ContentEngine struct {
@@ -100,6 +101,14 @@ func (e *ContentEngine) reloadAll() {
 	e.lock.Unlock()
 }
 
+var mediaTypes = []string{
+	"image/jpeg",
+	"image/png",
+	"image/gif",
+	"image/jpg",
+	"image/webm",
+}
+
 func (e *ContentEngine) reload(url string) ([]post, error) {
 	e.Log.Info("Loading feed", slog.String("url", url))
 	parsed, err := gofeed.NewParser().ParseURL(url)
@@ -118,12 +127,43 @@ func (e *ContentEngine) reload(url string) ([]post, error) {
 			if len(desc) > 1000 {
 				desc = desc[:1000] + " ..."
 			}
+			var thumb *string
+			if item.Image != nil {
+				thumb = &item.Image.URL
+			} else if media, ok := item.Extensions["media"]; ok {
+				if thumbs, ok := media["thumbnail"]; ok {
+					for _, t := range thumbs {
+						if url, ok := t.Attrs["url"]; ok {
+							thumb = &url
+						}
+					}
+				}
+
+				if contents, ok := media["content"]; ok {
+					for _, t := range contents {
+						if url, ok := t.Attrs["url"]; ok {
+							if mediaType, ok := t.Attrs["type"]; ok {
+								if slices.Contains(mediaTypes, mediaType) {
+									thumb = &url
+								}
+							}
+						}
+					}
+				}
+			} else if len(item.Enclosures) > 0 {
+				for _, enc := range item.Enclosures {
+					if slices.Contains(mediaTypes, enc.Type) {
+						thumb = &enc.URL
+					}
+				}
+			}
 			out = append(out, post{
 				title:       cleanStr(item.Title),
 				timestamp:   *item.PublishedParsed,
 				source:      cleanStr(parsed.Title),
 				description: desc,
 				url:         item.Link,
+				thumbnail:   thumb,
 			})
 		}
 	}

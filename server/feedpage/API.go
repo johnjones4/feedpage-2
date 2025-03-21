@@ -85,6 +85,7 @@ func (a *API) GetApiPosts(w http.ResponseWriter, r *http.Request, params GetApiP
 				Timestamp:   p.timestamp,
 				Description: p.description,
 				Url:         p.url,
+				Thumbnail:   p.thumbnail,
 			})
 			if len(out) >= pageSize {
 				break loop

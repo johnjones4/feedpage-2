@@ -16,6 +16,7 @@ import (
 type Post struct {
 	Description string    `json:"description"`
 	Source      string    `json:"source"`
+	Thumbnail   *string   `json:"thumbnail,omitempty"`
 	Timestamp   time.Time `json:"timestamp"`
 	Title       string    `json:"title"`
 	Url         string    `json:"url"`

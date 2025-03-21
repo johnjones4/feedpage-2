@@ -36,10 +36,23 @@ p:last-child {
 }
 
 article {
-  padding: 1em;
   background: #fff;
   border-radius: 0.5em;
   margin: 0 auto 1em auto;
+  overflow: hidden;
+}
+
+article .thumbnail {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  display: block;
+}
+
+article .inner {
+  padding: 1em;
 }
 
 a {
