@@ -1,0 +1,47 @@
+openapi: "3.0.0"
+paths:
+  /api/posts:
+    get:
+      parameters:
+      - name: page
+        in: query
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Posts'
+components:
+  schemas:
+    Posts:
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Post'
+      required:
+        - items
+    Post:
+      properties:
+        title:
+          type: string
+        source:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        description:
+          type: string
+        url:
+          type: string
+      required:
+        - title
+        - source
+        - timestamp
+        - description
+        - url
